@@ -1,7 +1,15 @@
-function ficaAzul() {
-    const botao = document.getElementById("botao");
-    botao.style.backgroundColor = "blue";
-}
+document.addEventListener("DOMContentLoaded", function () {
+  var corBotao = document.getElementById("botao");
+  corBotao.addEventListener("click", function () {
+    chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+      chrome.scripting.executeScript({
+        target: { tabId: tabs[0].id },
+        function: mudaCorTexto,
+      });
+    });
+  });
+});
 
-const botao = document.getElementById("botao");
-botao.addEventListener("click", ficaAzul);
+function mudaCorTexto() {
+  document.body.style.color = "yellow";
+}
