@@ -1,0 +1,87 @@
+*{
+    box-sizing: border-box;
+}
+body{
+    width: 300px;
+    height: 215px;
+}
+#titulo{
+    width: 300px;
+    height: 15px;
+}
+#titulo h1{
+    font-size: 15px;
+    font-style: italic;
+    font-weight: 700;
+    margin-top: 10px;
+    text-align: center
+}
+#selecioneTipo{
+    margin-top: 40px;
+    width: 300px;
+}
+#selecioneTipo p{
+    color: #000;
+    font-size: 12px;
+    text-align: center;
+}
+#botaoTritanopia{
+    margin-left: 25px;
+    margin-top: 10px;
+    width: 243px;
+    background-color: #D9D9D9;
+    border-radius: 5px;
+    padding: 5px;
+}
+#botaoDeuteranopia{
+    margin-left: 25px;
+    margin-top: 10px;
+    width: 243px;
+    background-color: #D9D9D9;
+    border-radius: 5px;
+    padding: 5px;
+}
+#botaoProtanopia{
+    margin-left: 25px;
+    margin-top: 10px;
+    width: 243px;
+    background-color: #D9D9D9;
+    border-radius: 5px;
+    padding: 5px;
+}
+.botaoTexto{
+    font-size: 15px;
+    font-style: italic;
+    font-weight: 600;
+    margin: 2px;
+}
+#quadradinhoP{
+    margin-top: -22px;
+    margin-right: 5px;
+    width: 18px;
+    height: 18px;
+    border-radius: 2px;
+    border: 0.5px solid #000;
+    background: #A41919;
+    float: right;
+}
+#quadradinhoD{
+    margin-top: -22px;
+    margin-right: 5px;
+    width: 18px;
+    height: 18px;
+    border-radius: 2px;
+    border: 0.5px solid #000;
+    background: green;
+    float: right;
+}
+#quadradinhoT{
+    margin-top: -22px;
+    margin-right: 5px;
+    width: 18px;
+    height: 18px;
+    border-radius: 2px;
+    border: 0.5px solid #000;
+    background: blue;
+    float: right;
+}
