@@ -1,12 +1,24 @@
-document.addEventListener("DOMContentLoaded", function () {
+var ativado = false;
+document.addEventListener("DOMContentLoaded", function (){
   var corBotaoP = document.getElementById("botaoProtanopia");
-  corBotaoP.addEventListener("click", function () {
-    chrome.tabs.query({active: true, currentWindow: true}, function (tabs) {
-      chrome.scripting.executeScript({
-        target: {tabId: tabs[0].id},
-        function: mudaCorProtanopia,
+  corBotaoP.addEventListener("click", function (){
+    ativado = !ativado;
+    if(ativado){
+      chrome.tabs.query({active: true, currentWindow: true}, function (tabs){
+        chrome.scripting.executeScript({
+          target: {tabId: tabs[0].id},
+          function: mudaCorProtanopia,
+        });
       });
-    });
+    }
+    else{
+      chrome.tabs.query({active: true, currentWindow: true}, function (tabs){
+        chrome.scripting.executeScript({
+          target: {tabId: tabs[0].id},
+          function: desativa,
+        });
+      });
+    }
   });
 });
 
@@ -31,6 +43,13 @@ function mudaCorProtanopia(){
       elementos[i].style.color = "navy";
     }
   }
+}
+
+function desativa(){
+  var elementos = document.getElementsByTagName("*");
+  for (var i = 0; i < elementos.length; i++) {
+      elementos[i].style.color = ""; 
+    }
 }
 
 
