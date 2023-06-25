@@ -51,13 +51,13 @@ function mudaCorProtanopia(){
       var verdeBG = parseInt(rgbBG[1]);
       var azulBG = parseInt(rgbBG[2]);
     
-      if (vermelhoBG > 100 && verdeBG < 70 && azulBG < 70) {
+      if (vermelhoBG > 100 && verdeBG < 70 && azulBG < 70){
         elementos[i].style.backgroundColor = "red";
       }
-      if (vermelhoBG > 150 && verdeBG < 100 && azulBG > 150) {
+      if (vermelhoBG > 150 && verdeBG < 100 && azulBG > 150){
         elementos[i].style.backgroundColor = "#a45ee9";
       }
-      if (vermelhoBG < 100 && verdeBG < 170 && azulBG > 150) {
+      if (vermelhoBG < 100 && verdeBG < 170 && azulBG > 150){
         elementos[i].style.backgroundColor = "navy";
       }
     }
