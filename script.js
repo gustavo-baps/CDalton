@@ -27,7 +27,7 @@ function mudaCorProtanopia(){
   for (var i = 0; i < elementos.length; i++){
     var estilo = getComputedStyle(elementos[i]);
     var cor = estilo.color;
-    var corBG = estilo.getPropertyValue("background-color")
+    var corBG = estilo.getPropertyValue("background-color");
 
     if (cor.startsWith("rgb")) {
       var rgb = cor.match(/\d+/g);
@@ -41,24 +41,26 @@ function mudaCorProtanopia(){
       if(vermelho > 150 && verde < 100 && azul > 150){
         elementos[i].style.color = "#a45ee9";
       }
-      if(vermelho < 100 && verde < 170 && azul > 150){
+      if(vermelho < 100 && verde < 170 && azul > 100){
         elementos[i].style.color = "navy";
       }
-    }
-    if(elementos[i].tagName.toLowerCase() === "nav" && corBG.startsWith("rgb")){
+
       var rgbBG = corBG.match(/\d+/g);
       var vermelhoBG = parseInt(rgbBG[0]);
       var verdeBG = parseInt(rgbBG[1]);
       var azulBG = parseInt(rgbBG[2]);
     
-      if (vermelhoBG > 100 && verdeBG < 70 && azulBG < 70){
+      if(vermelhoBG > 100 && verdeBG < 70 && azulBG < 70){
         elementos[i].style.backgroundColor = "red";
       }
-      if (vermelhoBG > 150 && verdeBG < 100 && azulBG > 150){
+      if(vermelhoBG > 150 && verdeBG < 100 && azulBG > 150){
         elementos[i].style.backgroundColor = "#a45ee9";
       }
-      if (vermelhoBG < 100 && verdeBG < 170 && azulBG > 150){
+      if(vermelhoBG < 100 && verdeBG < 70 && azulBG > 80){
         elementos[i].style.backgroundColor = "navy";
+      }
+      if(vermelhoBG < 100 && verdeBG < 150 && azulBG > 170){
+        elementos[i].style.backgroundColor = "blue";
       }
     }
   }
@@ -69,9 +71,7 @@ function desativa(){
   var elementos = document.getElementsByTagName("*");
   for(var i = 0; i < elementos.length; i++){
       elementos[i].style.color = "";
-      if(elementos[i].tagName.toLowerCase() === "nav"){
-        elementos[i].style.backgroundColor = "";
-      } 
+      elementos[i].style.backgroundColor = "";
     }
 }
 
