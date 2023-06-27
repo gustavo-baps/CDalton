@@ -1,6 +1,7 @@
 var ativado = false;
 document.addEventListener("DOMContentLoaded", function (){
   var corBotaoP = document.getElementById("botaoProtanopia");
+  var corBotaoD = document.getElementById("botaoDeuteranopia");
   corBotaoP.addEventListener("click", function (){
     ativado = !ativado;
     if(ativado){
@@ -20,9 +21,38 @@ document.addEventListener("DOMContentLoaded", function (){
       });
     }
   });
+  corBotaoD.addEventListener("click", function (){
+    ativado = !ativado;
+    if(ativado){
+      chrome.tabs.query({active: true, currentWindow: true}, function (tabs){
+        chrome.scripting.executeScript({
+          target: {tabId: tabs[0].id},
+          function: mudaCorDeuteranopia, 
+        });
+      });
+    }
+    else{
+      chrome.tabs.query({active: true, currentWindow: true}, function (tabs){
+        chrome.scripting.executeScript({
+          target: {tabId: tabs[0].id},
+          function: desativa,
+        });
+      });
+    }
+  });
 });
 
 function mudaCorProtanopia(){
+  var imagens = document.querySelectorAll("img");
+  var videos = document.querySelectorAll("video");
+
+  for (var i = 0; i < imagens.length; i++) {
+    imagens[i].style.filter = "brightness(1.2) contrast(1.2)";
+  }
+
+  for (var j = 0; j < videos.length; j++) {
+    videos[j].style.filter = "brightness(1.2) contrast(1.2)";
+  }
   var elementos = document.querySelectorAll("*");
   for (var i = 0; i < elementos.length; i++){
     var estilo = getComputedStyle(elementos[i]);
@@ -65,13 +95,40 @@ function mudaCorProtanopia(){
     }
   }
 }
+function mudaCorDeuteranopia(){
+  var imagens = document.querySelectorAll("img");
+  var videos = document.querySelectorAll("video");
 
+  for (var i = 0; i < imagens.length; i++) {
+    imagens[i].style.filter = "brightness(1.2) contrast(1.2)";
+  }
+
+  for (var j = 0; j < videos.length; j++) {
+    videos[j].style.filter = "brightness(1.2) contrast(1.2)";
+  }
+  var elementos = document.querySelectorAll("*");
+  for (var i = 0; i < elementos.length; i++){
+    var estilo = getComputedStyle(elementos[i]);
+    var cor = estilo.color;
+    var corBG = estilo.getPropertyValue("background-color");
+
+    if (cor.startsWith("rgb")) {
+      var rgb = cor.match(/\d+/g);
+      var vermelho = parseInt(rgb[0]);
+      var verde = parseInt(rgb[1]);
+      var azul = parseInt(rgb[2]);
+
+      
+    }
+  }
+}
 
 function desativa(){
   var elementos = document.getElementsByTagName("*");
   for(var i = 0; i < elementos.length; i++){
       elementos[i].style.color = "";
       elementos[i].style.backgroundColor = "";
+      elementos[i].style.filter = "";
     }
 }
 
