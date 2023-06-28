@@ -96,33 +96,11 @@ function mudaCorProtanopia(){
   }
 }
 function mudaCorDeuteranopia(){
-  var imagens = document.querySelectorAll("img");
-  var videos = document.querySelectorAll("video");
-
-  for (var i = 0; i < imagens.length; i++) {
-    imagens[i].style.filter = "brightness(1.2) contrast(1.2)";
-  }
-
-  for (var j = 0; j < videos.length; j++) {
-    videos[j].style.filter = "brightness(1.2) contrast(1.2)";
-  }
-  var elementos = document.querySelectorAll("*");
+  var elementos = document.querySelectorAll("*")
   for (var i = 0; i < elementos.length; i++){
-    var estilo = getComputedStyle(elementos[i]);
-    var cor = estilo.color;
-    var corBG = estilo.getPropertyValue("background-color");
-
-    if (cor.startsWith("rgb")) {
-      var rgb = cor.match(/\d+/g);
-      var vermelho = parseInt(rgb[0]);
-      var verde = parseInt(rgb[1]);
-      var azul = parseInt(rgb[2]);
-
-      
+    elementos[i].style.filter = "brightness(1.01) contrast(1.02) hue-rotate(5deg)";
     }
   }
-}
-
 function desativa(){
   var elementos = document.getElementsByTagName("*");
   for(var i = 0; i < elementos.length; i++){
