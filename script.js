@@ -1,42 +1,53 @@
 var ativadoP = false;
-document.addEventListener("DOMContentLoaded", function (){
+
+document.addEventListener("DOMContentLoaded", function(){
   var corBotaoP = document.getElementById("botaoProtanopia");
   var corBotaoD = document.getElementById("botaoDeuteranopia");
-  corBotaoP.addEventListener("click", function (){
+
+  corBotaoP.addEventListener("click", function(){
     ativadoP = !ativadoP;
     if(ativadoP){
-      chrome.tabs.query({active: true, currentWindow: true}, function (tabs){
-        chrome.scripting.executeScript({
-          target: {tabId: tabs[0].id},
-          function: mudaCorProtanopia, 
+      chrome.tabs.query({}, function(tabs){
+        tabs.forEach(function(tab){
+          chrome.scripting.executeScript({
+            target: {tabId: tab.id},
+            function: mudaCorProtanopia,
+          });
         });
       });
-    }
+    } 
     else{
-      chrome.tabs.query({active: true, currentWindow: true}, function (tabs){
-        chrome.scripting.executeScript({
-          target: {tabId: tabs[0].id},
-          function: desativaP,
+      chrome.tabs.query({}, function(tabs){
+        tabs.forEach(function(tab) {
+          chrome.scripting.executeScript({
+            target: { tabId: tab.id },
+            function: desativaP,
+          });
         });
       });
     }
   });
+
   var ativadoD = false;
-  corBotaoD.addEventListener("click", function (){
+  corBotaoD.addEventListener("click", function(){
     ativadoD = !ativadoD;
     if(ativadoD){
-      chrome.tabs.query({active: true, currentWindow: true}, function (tabs){
-        chrome.scripting.executeScript({
-          target: {tabId: tabs[0].id},
-          function: mudaCorDeuteranopia, 
+      chrome.tabs.query({}, function(tabs){
+        tabs.forEach(function(tab){
+          chrome.scripting.executeScript({
+            target: {tabId: tab.id},
+            function: mudaCorDeuteranopia,
+          });
         });
       });
-    }
+    } 
     else{
-      chrome.tabs.query({active: true, currentWindow: true}, function (tabs){
-        chrome.scripting.executeScript({
-          target: {tabId: tabs[0].id},
-          function: desativaD,
+      chrome.tabs.query({}, function(tabs){
+        tabs.forEach(function(tab) {
+          chrome.scripting.executeScript({
+            target: {tabId: tab.id},
+            function: desativaD,
+          });
         });
       });
     }
@@ -47,20 +58,21 @@ function mudaCorProtanopia(){
   var imagens = document.querySelectorAll("img");
   var videos = document.querySelectorAll("video");
 
-  for (var i = 0; i < imagens.length; i++) {
+  for(var i = 0; i < imagens.length; i++){
     imagens[i].style.filter = "brightness(1.2) contrast(1.2)";
   }
 
-  for (var j = 0; j < videos.length; j++) {
+  for(var j = 0; j < videos.length; j++){
     videos[j].style.filter = "brightness(1.2) contrast(1.2)";
   }
+
   var elementos = document.querySelectorAll("*");
-  for (var i = 0; i < elementos.length; i++){
+  for(var i = 0; i < elementos.length; i++){
     var estilo = getComputedStyle(elementos[i]);
     var cor = estilo.color;
     var corBG = estilo.getPropertyValue("background-color");
 
-    if (cor.startsWith("rgb")) {
+    if(cor.startsWith("rgb")){
       var rgb = cor.match(/\d+/g);
       var vermelho = parseInt(rgb[0]);
       var verde = parseInt(rgb[1]);
@@ -79,27 +91,28 @@ function mudaCorProtanopia(){
       if(corBG.startsWith("rgb")){
         elementos[i].style.filter = "hue-rotate(2.3deg)";
       }
-      
     }
   }
 }
+
 function mudaCorDeuteranopia(){
-  var elementos = document.querySelectorAll("*")
-  for (var i = 0; i < elementos.length; i++){
+  var elementos = document.querySelectorAll("*");
+  for(var i = 0; i < elementos.length; i++){
     elementos[i].style.filter = "hue-rotate(2.3deg)";
-    }
   }
+}
+
 function desativaP(){
   var elementos = document.getElementsByTagName("*");
-  for(var i = 0; i < elementos.length; i++){
-      elementos[i].style.color = "";
-      elementos[i].style.filter = "";
-    }
+  for (var i = 0; i < elementos.length; i++){
+    elementos[i].style.color = "";
+    elementos[i].style.filter = "";
+  }
 }
+
 function desativaD(){
   var elementos = document.getElementsByTagName("*");
   for(var i = 0; i < elementos.length; i++){
     elementos[i].style.filter = "";
   }
 }
-
