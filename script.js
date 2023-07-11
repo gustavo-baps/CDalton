@@ -6,6 +6,8 @@ document.addEventListener("DOMContentLoaded", function(){
 
   corBotaoP.addEventListener("click", function(){
     ativadoP = !ativadoP;
+    corBotaoD.setAttribute('style', "background-color: #D9D9D9");
+    corBotaoP.setAttribute('style', 'background-color: #656565');
     if(ativadoP){
       chrome.tabs.query({}, function(tabs){
         tabs.forEach(function(tab){
@@ -17,6 +19,7 @@ document.addEventListener("DOMContentLoaded", function(){
       });
     } 
     else{
+      corBotaoP.setAttribute('style', 'background-color: #D9D9D9');
       chrome.tabs.query({}, function(tabs){
         tabs.forEach(function(tab) {
           chrome.scripting.executeScript({
@@ -31,6 +34,8 @@ document.addEventListener("DOMContentLoaded", function(){
   var ativadoD = false;
   corBotaoD.addEventListener("click", function(){
     ativadoD = !ativadoD;
+    corBotaoP.setAttribute('style', "background-color: #D9D9D9");
+    corBotaoD.setAttribute('style', 'background-color: #656565');
     if(ativadoD){
       chrome.tabs.query({}, function(tabs){
         tabs.forEach(function(tab){
@@ -42,6 +47,7 @@ document.addEventListener("DOMContentLoaded", function(){
       });
     } 
     else{
+      corBotaoD.setAttribute('style', 'background-color: #D9D9D9');
       chrome.tabs.query({}, function(tabs){
         tabs.forEach(function(tab) {
           chrome.scripting.executeScript({
