@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function(){
         tabs.forEach(function(tab){
           chrome.scripting.executeScript({
             target: {tabId: tab.id},
-            function: mudaCorProtanopia,
+            function: mudaCorProtanopia, 
           });
         });
       });
@@ -83,8 +83,7 @@ document.addEventListener("DOMContentLoaded", function(){
     }
   });
   
-});
-
+}); 
 function mudaCorTritanopia() {
   var elementos = document.querySelectorAll("*");
   for (var i = 0; i < elementos.length; i++) {
@@ -126,45 +125,73 @@ function mudaCorTritanopia() {
     }
   }
 }
-function mudaCorProtanopia(){
+function mudaCorProtanopia() {
   var elementos = document.querySelectorAll("*");
-  for(var i = 0; i < elementos.length; i++){
+
+  for (var i = 0; i < elementos.length; i++){
     var estilo = getComputedStyle(elementos[i]);
     var cor = estilo.color;
     var corBG = estilo.getPropertyValue("background-color");
+    if (!elementos[i].querySelector("img") && !elementos[i].querySelector("video")){
+      if (cor.startsWith("rgb")) {
+        var rgb = cor.match(/\d+/g);
+        var vermelho = parseInt(rgb[0]);
+        var verde = parseInt(rgb[1]);
+        var azul = parseInt(rgb[2]);
 
-    if(cor.startsWith("rgb")){
-      var rgb = cor.match(/\d+/g);
-      var vermelho = parseInt(rgb[0]);
-      var verde = parseInt(rgb[1]);
-      var azul = parseInt(rgb[2]);
+        if (vermelho > verde && vermelho > azul){
+          elementos[i].style.filter = "hue-rotate(15deg) saturate(1.2)";
+        }
+      }
+      if (corBG.startsWith("rgb")){
+        var rgbBG = corBG.match(/\d+/g);
+        var vermelhoBG = parseInt(rgbBG[0]);
+        var verdeBG = parseInt(rgbBG[1]);
+        var azulBG = parseInt(rgbBG[2]);
 
-      if(vermelho > 170 && verde < 70 && azul < 70){
-        elementos[i].style.color = "red";
+        if (vermelhoBG > verdeBG && vermelhoBG > azulBG){
+          elementos[i].style.filter = "hue-rotate(15deg) saturate(1.2)";
+        }
       }
-      if(vermelho > 150 && verde < 100 && azul > 150){
-        elementos[i].style.color = "#a45ee9";
-      }
-      if(vermelho < 100 && verde < 170 && azul > 100){
-        elementos[i].style.color = "navy";
-      }
-
-      if(corBG.startsWith("rgb")){
-        elementos[i].style.filter = "hue-rotate(2.3deg)";
-      }
+    }
+    else{
+      elementos[i].style.filter = "brightness(1.002)";
     }
   }
 }
 
+
 function mudaCorDeuteranopia(){
   var elementos = document.querySelectorAll("*");
-  for(var i = 0; i<elementos.length; i++){
+
+  for (var i = 0; i < elementos.length; i++){
     var estilo = getComputedStyle(elementos[i]);
     var cor = estilo.color;
     var corBG = estilo.getPropertyValue("background-color");
-    
-    if(corBG.startsWith("rgb")){
-      elementos[i].style.filter = "hue-rotate(2deg)";
+    if (!elementos[i].querySelector("img") && !elementos[i].querySelector("video")){
+      if (cor.startsWith("rgb")) {
+        var rgb = cor.match(/\d+/g);
+        var vermelho = parseInt(rgb[0]);
+        var verde = parseInt(rgb[1]);
+        var azul = parseInt(rgb[2]);
+
+        if (verde > vermelho && verde > azul){
+          elementos[i].style.filter = "hue-rotate(15deg) saturate(1.2)";
+        }
+      }
+      if (corBG.startsWith("rgb")){
+        var rgbBG = corBG.match(/\d+/g);
+        var vermelhoBG = parseInt(rgbBG[0]);
+        var verdeBG = parseInt(rgbBG[1]);
+        var azulBG = parseInt(rgbBG[2]);
+
+        if (verdeBG > vermelhoBG && verdeBG > azulBG){
+          elementos[i].style.filter = "hue-rotate(15deg) saturate(1.2)";
+        }
+      }
+    }
+    else{
+      elementos[i].style.filter = "brightness(1.002)";
     }
   }
 }

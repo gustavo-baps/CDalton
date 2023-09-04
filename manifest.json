@@ -5,6 +5,9 @@
     "action": {
       "default_popup": "index.html"
     },
+    "icons": {
+      "48": "/midia/icon128.png"
+    },
     "permissions": ["scripting", "activeTab"],
     "host_permissions": ["<all_urls>"]
   }

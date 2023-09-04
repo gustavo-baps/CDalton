@@ -3,17 +3,21 @@
 }
 body{
     width: 300px;
-    height: 215px;
+    height: 240px;
+}
+a{
+    font-size: 10px;
 }
 #titulo{
     width: 300px;
     height: 15px;
 }
-#titulo h1{
-    font-size: 15px;
+#titulo img{
+    width: 150px;
     font-style: italic;
     font-weight: 700;
     margin-top: 10px;
+    margin-left: 70px;
     text-align: center
 }
 #selecioneTipo{
@@ -22,7 +26,7 @@ body{
 }
 #selecioneTipo p{
     color: #000;
-    font-size: 12px;
+    font-size: 14px;
     text-align: center;
 }
 #botaoTritanopia{
@@ -32,6 +36,11 @@ body{
     background-color: #D9D9D9;
     border-radius: 5px;
     padding: 5px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+#botaoTritanopia:hover{
+    transform: scale(1.02);
 }
 #botaoDeuteranopia{
     margin-left: 25px;
@@ -40,6 +49,11 @@ body{
     background-color: #D9D9D9;
     border-radius: 5px;
     padding: 5px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+#botaoDeuteranopia:hover{
+    transform: scale(1.02);
 }
 #botaoProtanopia{
     margin-left: 25px;
@@ -48,6 +62,11 @@ body{
     background-color: #D9D9D9;
     border-radius: 5px;
     padding: 5px;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+#botaoProtanopia:hover{
+    transform: scale(1.02);
 }
 .botaoTexto{
     font-size: 15px;
