@@ -155,7 +155,7 @@ function mudaCorProtanopia() {
       }
     }
     else{
-      elementos[i].style.filter = "brightness(1.002)";
+      elementos[i].style.filter = "brightness(1.005) hue-rotate(2deg)";
     }
   }
 }
@@ -191,7 +191,7 @@ function mudaCorDeuteranopia(){
       }
     }
     else{
-      elementos[i].style.filter = "brightness(1.002)";
+      elementos[i].style.filter = "brightness(1.005) hue-rotate(2deg)";
     }
   }
 }
