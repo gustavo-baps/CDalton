@@ -1,12 +1,12 @@
 var ativadoP = false;
-function capturarCliqueNaPagina() {
-  chrome.runtime.sendMessage({ message: "capturaClique" }, function (response) {
+function capturarCliqueNaPagina(){
+  chrome.runtime.sendMessage({ message: "capturaClique" }, function (response){
     const imageDataUrl = response.imageDataUrl;
 
     const img = new Image();
     img.src = imageDataUrl;
 
-    img.onload = function () {
+    img.onload = function (){
         const canvas = document.createElement("canvas");
         canvas.width = img.width;
         canvas.height = img.height;
@@ -14,10 +14,10 @@ function capturarCliqueNaPagina() {
 
         context.drawImage(img, 0, 0, img.width, img.height);
 
-        if (!document._clickListenerAdded) {
+        if(!document._clickListenerAdded){
           document._clickListenerAdded = true;
 
-          document.addEventListener("click", function (event) {
+          document.addEventListener("click", function (event){
               const x = event.clientX;
               const y = event.clientY;
 
@@ -33,12 +33,12 @@ function capturarCliqueNaPagina() {
 }
 
 
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function (){
   var corBotaoP = document.getElementById("botaoProtanopia");
   var corBotaoD = document.getElementById("botaoDeuteranopia");
   var corBotaoT = document.getElementById("botaoTritanopia");
 
-  corBotaoP.addEventListener("click", function () {
+  corBotaoP.addEventListener("click", function (){
     ativadoP = !ativadoP;
     corBotaoD.setAttribute('style', "background-color: #D9D9D9");
     corBotaoP.setAttribute('style', 'background-color: #656565');
@@ -222,10 +222,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 
-function mudaCorProtanopia() {
+function mudaCorProtanopia(){
   var elementos = document.querySelectorAll("*");
 
-  for (var i = 0; i < elementos.length; i++){
+  for(var i = 0; i < elementos.length; i++){
     var estilo = getComputedStyle(elementos[i]);
     var cor = estilo.color;
     var corBG = estilo.getPropertyValue("background-color");
@@ -236,17 +236,17 @@ function mudaCorProtanopia() {
         var verde = parseInt(rgb[1]);
         var azul = parseInt(rgb[2]);
 
-        if (vermelho > verde && vermelho > azul){
+        if(vermelho > verde && vermelho > azul){
           elementos[i].style.filter = "hue-rotate(15deg) saturate(1.2)";
         }
       }
-      if (corBG.startsWith("rgb")){
+      if(corBG.startsWith("rgb")){
         var rgbBG = corBG.match(/\d+/g);
         var vermelhoBG = parseInt(rgbBG[0]);
         var verdeBG = parseInt(rgbBG[1]);
         var azulBG = parseInt(rgbBG[2]);
 
-        if (vermelhoBG > verdeBG && vermelhoBG > azulBG){
+        if(vermelhoBG > verdeBG && vermelhoBG > azulBG){
           elementos[i].style.filter = "hue-rotate(15deg) saturate(1.2)";
         }
       }
@@ -261,22 +261,22 @@ function mudaCorProtanopia() {
 function mudaCorDeuteranopia(){
   var elementos = document.querySelectorAll("*");
 
-  for (var i = 0; i < elementos.length; i++){
+  for(var i = 0; i < elementos.length; i++){
     var estilo = getComputedStyle(elementos[i]);
     var cor = estilo.color;
     var corBG = estilo.getPropertyValue("background-color");
-    if (!elementos[i].querySelector("img") && !elementos[i].querySelector("video")){
+    if(!elementos[i].querySelector("img") && !elementos[i].querySelector("video")){
       if (cor.startsWith("rgb")) {
         var rgb = cor.match(/\d+/g);
         var vermelho = parseInt(rgb[0]);
         var verde = parseInt(rgb[1]);
         var azul = parseInt(rgb[2]);
 
-        if (verde > vermelho && verde > azul){
+        if(verde > vermelho && verde > azul){
           elementos[i].style.filter = "hue-rotate(15deg) saturate(1.2)";
         }
       }
-      if (corBG.startsWith("rgb")){
+      if(corBG.startsWith("rgb")){
         var rgbBG = corBG.match(/\d+/g);
         var vermelhoBG = parseInt(rgbBG[0]);
         var verdeBG = parseInt(rgbBG[1]);
