@@ -1,12 +1,44 @@
 var ativadoP = false;
+function capturarCliqueNaPagina() {
+  chrome.runtime.sendMessage({ message: "capturaClique" }, function (response) {
+    const imageDataUrl = response.imageDataUrl;
 
-document.addEventListener("DOMContentLoaded", function(){
+    const img = new Image();
+    img.src = imageDataUrl;
+
+    img.onload = function () {
+        const canvas = document.createElement("canvas");
+        canvas.width = img.width;
+        canvas.height = img.height;
+        const context = canvas.getContext("2d");
+
+        context.drawImage(img, 0, 0, img.width, img.height);
+
+        if (!document._clickListenerAdded) {
+          document._clickListenerAdded = true;
+
+          document.addEventListener("click", function (event) {
+              const x = event.clientX;
+              const y = event.clientY;
+
+              const pixelData = context.getImageData(x, y, 1, 1).data;
+              const cor = `rgb(${pixelData[0]}, ${pixelData[1]}, ${pixelData[2]})`;
+
+              alert("cor clicada: "+cor)
+              console.log("Cor do pixel clicado:", cor);
+          });
+      }
+    };
+  });
+}
+
+
+document.addEventListener("DOMContentLoaded", function () {
   var corBotaoP = document.getElementById("botaoProtanopia");
   var corBotaoD = document.getElementById("botaoDeuteranopia");
   var corBotaoT = document.getElementById("botaoTritanopia");
-  
 
-  corBotaoP.addEventListener("click", function(){
+  corBotaoP.addEventListener("click", function () {
     ativadoP = !ativadoP;
     corBotaoD.setAttribute('style', "background-color: #D9D9D9");
     corBotaoP.setAttribute('style', 'background-color: #656565');
@@ -32,10 +64,11 @@ document.addEventListener("DOMContentLoaded", function(){
         });
       });
     }
-  });
 
+    chrome.runtime.sendMessage({ message: "mudaCorProtanopia", ativadoP: ativadoP });
+  });
   var ativadoD = false;
-  corBotaoD.addEventListener("click", function(){
+  corBotaoD.addEventListener("click", function (){
     ativadoD = !ativadoD;
     corBotaoP.setAttribute('style', "background-color: #D9D9D9");
     corBotaoD.setAttribute('style', 'background-color: #656565');
@@ -61,9 +94,10 @@ document.addEventListener("DOMContentLoaded", function(){
         });
       });
     }
+
   });
   var ativadoT = false;
-  corBotaoT.addEventListener("click", function(){
+  corBotaoT.addEventListener("click", function (){
     ativadoT = !ativadoT;
     corBotaoD.setAttribute('style', "background-color: #D9D9D9");
     corBotaoP.setAttribute('style', 'background-color: #D9D9D9');
@@ -73,7 +107,7 @@ document.addEventListener("DOMContentLoaded", function(){
         tabs.forEach(function(tab){
           chrome.scripting.executeScript({
             target: {tabId: tabs[0].id},
-            function: mudaCorTritanopia,
+            function: capturarCliqueNaPagina,
           });
         });
       });
@@ -82,30 +116,87 @@ document.addEventListener("DOMContentLoaded", function(){
       corBotaoT.setAttribute('style', 'background-color: #D9D9D9');
     }
   });
-  
-}); 
-function mudaCorTritanopia() {
+ 
+
+/*function mudaCorTritanopia(){
   var elementos = document.querySelectorAll("*");
-  for (var i = 0; i < elementos.length; i++) {
-    elementos[i].addEventListener("click", capturarClique, { once: true });
+  for (var i = 0; i < elementos.length; i++){
+    elementos[i].addEventListener("click", capturarClique);
+
+    var links = elementos[i].querySelectorAll("a");
+    for(var j = 0; j < links.length; j++){
+      links[j].addEventListener("click", bloquearClique);
+    }
   }
 
-  async function capturarClique(event) {
+  async function capturarClique(event){
+    for(var i = 0; i< elementos.length; i++){
+      elementos[i].removeEventListener("click", capturarClique);
+    }
+    event.stopPropagation();
     var alvo = event.target;
     var style = getComputedStyle(alvo);
+    var color = style.color;
     var bgColor = style.backgroundColor;
-    var rgbMatch = bgColor.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/);
+    var rgbBgMatch = bgColor.match(/rgb\((\d+), \s*(\d+), s*(\d+)\)/);
+    var rgbMatch = color.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/);
 
-    if (rgbMatch) {
+    if(rgbMatch && rgbBgMatch){
       var colorRGB = rgbMatch.slice(1).map(value => parseInt(value, 10));
+      var bgColorRGB = rgbBgMatch.slice(1).map(value => parseInt(value, 10));
 
+      var corBody = getComputedStyle(document.body).color;
+      var bodyRGBMatch = corBody.match(/rgb\((\d+),\s*(\d+),\s*(\d+)\)/);
+
+      if (bodyRGBMatch) {
+        var bodyRGB = bodyRGBMatch.slice(1).map(value => parseInt(value, 10));
+        var isDifferentFromBody = !arraysIguais(colorRGB, bodyRGB);
+        if (isDifferentFromBody) {
+          getColorName(colorRGB).then(colorName => {
+            alert("cor em RGB: " + colorRGB.join(", ") + "\nNome da cor: "+ colorName);
+            console.log("cor em RGB: ", colorRGB.join(", "));
+            console.log("Nome da cor: ", colorName);
+          });
+        }
+      }
+      getColorName(bgColorRGB).then(bgColorName => {
+        alert("cor em RGB: " + bgColorRGB.join(", ") + "\nNome da cor: "+ bgColorName);
+        console.log("cor RGB: ", bgColorRGB.join(", "));
+        console.log("Nome da cor: ", bgColorName);
+      });
+    }
+    else if(rgbMatch){
+      var colorRGB = rgbMatch.slice(1).map(value => parseInt(value, 10));
+  
       getColorName(colorRGB).then(colorName => {
+        alert("cor em RGB: " + colorRGB.join(", ") + "\nNome da cor: "+ colorName);
         console.log("cor em RGB: ", colorRGB.join(", "));
         console.log("Nome da cor: ", colorName);
       });
-    } else {
-      console.error("nao foi possível extrair a cor");
+    } 
+    else if(rgbBgMatch){
+      var bgColorRGB = rgbBgMatch.slice(1).map(value => parseInt(value, 10));
+  
+      getColorName(bgColorRGB).then(colorName =>{
+        alert("cor em RGB: " + bgColorRGB.join(", ") + "\nNome da cor: "+ colorName);
+        console.log("cor em RGB: ", bgColorRGB.join(", "));
+        console.log("Nome da cor: ", colorName);
+      });
     }
+    for(var i = 0; i<links.length; i++){
+      links[i].removeEventListener('click', bloquearClique);
+    }
+  }
+  function arraysIguais(array1, array2) {
+    if (array1.length !== array2.length) {
+      return false;
+    }
+    for (var i = 0; i < array1.length; i++) {
+      if (array1[i] !== array2[i]) {
+        return false;
+      }
+    }
+    return true;
   }
   async function getColorName(rgb) {
     var stringRgb = rgb.join(",");
@@ -124,7 +215,13 @@ function mudaCorTritanopia() {
       return 'unknown';
     }
   }
-}
+  function bloquearClique(){
+    event.preventDefault();
+  }
+}*/
+
+
+
 function mudaCorProtanopia() {
   var elementos = document.querySelectorAll("*");
 
@@ -210,3 +307,4 @@ function desativaD(){
     elementos[i].style.filter = "";
   }
 }
+});
