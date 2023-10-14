@@ -3,7 +3,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse){
         chrome.tabs.captureVisibleTab({ format: "png" }, function (dataUrl){
             sendResponse({ imageDataUrl: dataUrl });
         });
-        return true; // Permite a execução assíncrona
+        return true;
     }
-    return false; // Não precisa de uma resposta para mensagens diferentes de "capturaClique"
+    return false;
 });
