@@ -1,6 +1,13 @@
 var ativadoP = false;
 var cliqueListener = false;
+var ativadoT = false;
+var capturaAtiva = false;
 function capturarCliqueNaPagina(){
+  capturaAtiva = true;
+  const scrollY = window.scrollY;
+  const pageHeight = document.documentElement.scrollHeight;
+  disableScroll();
+  console.log(capturaAtiva)
   chrome.runtime.sendMessage({ message: "capturaClique" }, function (response){
     const imageDataUrl = response.imageDataUrl;
 
@@ -12,15 +19,21 @@ function capturarCliqueNaPagina(){
       canvas.width = img.width;
       canvas.height = img.height;
       const context = canvas.getContext("2d");
-
-      context.drawImage(img, 0, 0, img.width, img.height);
+      if(canvas.height < pageHeight){
+        canvas.height = pageHeight; 
+      }
+      
+      const offsetY = -scrollY;
+      console.log(offsetY)
+      canvas.style.marginTop = -offsetY + 'px';
+      context.drawImage(img, 0, -offsetY, img.width, img.height);
 
       if(!document._clickListenerAdded){
         document._clickListenerAdded = true;
 
         cliqueListener = function (event){
           const x = event.clientX;
-          const y = event.clientY;
+          const y = event.clientY + window.scrollY;
 
           const pixelData = context.getImageData(x, y, 1, 1).data;
           const stringCor = `${pixelData[0]},${pixelData[1]},${pixelData[2]}`;
@@ -30,15 +43,37 @@ function capturarCliqueNaPagina(){
           corNomeLegal = retornaCor(red, green, blue);
           console.log(corNomeLegal)
           getColorName(stringCor).then(colorName =>{
-            alert("cor em RGB: " + stringCor + "\nNome da cor: "+ colorName);
+            const info = document.createElement("div");
+            info.innerHTML = "Cor em RGB: " + stringCor + "<br>Nome da cor: " + colorName + "<br>Semelhante a "+corNomeLegal;
+            info.style.position = "absolute";
+            info.style.left = x + "px";
+            info.style.top = y + "px";
+            info.style.backgroundColor = "white";
+            info.style.border = "1px solid black";
+            info.style.padding = "10px";
+
+            document.body.appendChild(info);
             console.log("cor em RGB: ", stringCor);
             console.log("Nome da cor: ", colorName);
+            setTimeout(function(){
+              if(info){
+                info.parentNode.removeChild(info);
+                info = null;
+              }
+            }, 3000);
           });
         };
         document.addEventListener("click", cliqueListener);
         console.log("evento adicionado");
-      } 
+      }
+      document.body.style.overflow = "auto"; 
     };
+    if (capturaAtiva) {
+      const links = document.querySelectorAll("a");
+      links.forEach(function (link) {
+        link.addEventListener("click", bloquearRedirecionamento);
+      });
+    }
   });
   async function getColorName(rgb) {
     var apiUrl = `https://www.thecolorapi.com/id?rgb=${rgb}`;
@@ -91,6 +126,19 @@ function capturarCliqueNaPagina(){
       return "branco"
     }
   }
+  
+}
+function disableScroll() {
+  document.body.style.overflow = "hidden";
+  document.documentElement.style.overflow = "hidden";
+}
+function enableScroll() {
+  document.body.style.overflow = "";
+  document.documentElement.style.overflow = "";
+}
+
+function bloquearRedirecionamento(event){
+  event.preventDefault();
 }
 
 
@@ -157,7 +205,6 @@ document.addEventListener("DOMContentLoaded", function (){
     }
 
   });
-  var ativadoT = false;
   corBotaoT.addEventListener("click", function (){
     ativadoT = !ativadoT;
     corBotaoD.setAttribute('style', "background-color: #D9D9D9");
@@ -362,5 +409,10 @@ document.addEventListener("DOMContentLoaded", function (){
     console.log("desativada");  
     document.removeEventListener("click", cliqueListener);
     document._clickListenerAdded = false;
+    var links = document.querySelectorAll("a");
+    links.forEach(function (link) {
+      link.removeEventListener("click", bloquearRedirecionamento);
+    });
+    enableScroll();
   }
 });
