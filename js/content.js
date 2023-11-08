@@ -24,6 +24,11 @@ function capturarCliqueNaPagina(){
 
           const pixelData = context.getImageData(x, y, 1, 1).data;
           const stringCor = `${pixelData[0]},${pixelData[1]},${pixelData[2]}`;
+          var red = pixelData[0];
+          var green = pixelData[1];
+          var blue = pixelData[2];
+          corNomeLegal = retornaCor(red, green, blue);
+          console.log(corNomeLegal)
           getColorName(stringCor).then(colorName =>{
             alert("cor em RGB: " + stringCor + "\nNome da cor: "+ colorName);
             console.log("cor em RGB: ", stringCor);
@@ -36,21 +41,56 @@ function capturarCliqueNaPagina(){
     };
   });
   async function getColorName(rgb) {
-  var apiUrl = `https://www.thecolorapi.com/id?rgb=${rgb}`;
-  try {
-    var resp = await fetch(apiUrl);
-    var data = await resp.json();
-    if (resp.ok) {
-      return data.name.value || "Unknown";
-    } else {
-      console.error('erro na resposta da api: ', data);
-      return "Unknown";
+    var apiUrl = `https://www.thecolorapi.com/id?rgb=${rgb}`;
+    try{
+      var resp = await fetch(apiUrl);
+      var data = await resp.json();
+      if (resp.ok) {
+        return data.name.value || "Unknown";
+      } else {
+        console.error('erro na resposta da api: ', data);
+        return "Unknown";
+      }
+    }catch(error){
+      console.error('erro: ', error);
+      return 'unknown';
     }
-  } catch (error) {
-    console.error('erro: ', error);
-    return 'unknown';
   }
-}
+  function retornaCor(red, green, blue){
+    if(red >=238 && red<=255 && green>=204 && green<=255 && blue>=0 && blue<=80){
+      return "amarelo"
+    }
+    if(red >=0 && red<=173 && green>=0 && green<=216 && blue>=54 && blue<=255){
+      return "azul"
+    }
+    if(red >=0 && red<=210 && green>=50 && green<=255 && blue>=0 && blue<=219){
+      return "verde"
+    }
+    if(red >=170 && red<=255 && green>=0 && green<=116 && blue>=0 && blue<=60){
+      return "vermelho"
+    }
+    if(red >=210 && red<=255 && green>=65 && green<=165 && blue>=0 && blue<=60){
+      return "laranja"
+    }
+    if(red >=60 && red<=255 && green>=20 && green<=228 && blue>=0 && blue<=196){
+      return "marrom"
+    }
+    if(red >=75 && red<=230 && green>=0 && green<=232 && blue>=71 && blue<=255){
+      return "roxo"
+    }
+    if(red >=102 && red<=255 && green>=0 && green<=228 && blue>=55 && blue<=255){
+      return "rosa"
+    }
+    if(red == green && red == blue && red >=20 && red <=240){
+      return "cinza"
+    }
+    if(red == green && red == blue && red >=0 && red <=20){
+      return "preto"
+    }
+    if(red == green && red == blue && red >=240 && red <=255){
+      return "branco"
+    }
+  }
 }
 
 
