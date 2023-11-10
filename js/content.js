@@ -1,7 +1,8 @@
-var ativadoP = false;
 var cliqueListener = false;
-var ativadoT = false;
 var capturaAtiva = false;
+var ativadoP = false;
+var ativadoD = false;
+var ativadoT = false;
 function capturarCliqueNaPagina(){
   capturaAtiva = true;
   const scrollY = window.scrollY;
@@ -51,6 +52,9 @@ function capturarCliqueNaPagina(){
             info.style.backgroundColor = "white";
             info.style.border = "1px solid black";
             info.style.padding = "10px";
+            info.style.fontFamily = 'Verdana';
+            info.style.fontSize = '12px';
+            info.style.zIndex = 1000000000000;
 
             document.body.appendChild(info);
             console.log("cor em RGB: ", stringCor);
@@ -68,10 +72,10 @@ function capturarCliqueNaPagina(){
       }
       document.body.style.overflow = "auto"; 
     };
-    if (capturaAtiva) {
-      const links = document.querySelectorAll("a");
-      links.forEach(function (link) {
-        link.addEventListener("click", bloquearRedirecionamento);
+    if(capturaAtiva){
+      const links = document.querySelectorAll("div");
+      links.forEach(function (link){
+        link.addEventListener("click", bloquearRedirect);
       });
     }
   });
@@ -95,7 +99,7 @@ function capturarCliqueNaPagina(){
     if(red >=238 && red<=255 && green>=204 && green<=255 && blue>=0 && blue<=80){
       return "amarelo"
     }
-    if(red >=0 && red<=173 && green>=0 && green<=216 && blue>=54 && blue<=255){
+    if(red >=0 && red<=173 && green>=1 && green<=216 && blue>=54 && blue<=255){
       return "azul"
     }
     if(red >=0 && red<=210 && green>=50 && green<=255 && blue>=0 && blue<=219){
@@ -110,7 +114,7 @@ function capturarCliqueNaPagina(){
     if(red >=60 && red<=255 && green>=20 && green<=228 && blue>=0 && blue<=196){
       return "marrom"
     }
-    if(red >=75 && red<=230 && green>=0 && green<=232 && blue>=71 && blue<=255){
+    if(red >=75 && red<=230 && green==0 && blue>=71 && blue<=255){
       return "roxo"
     }
     if(red >=102 && red<=255 && green>=0 && green<=228 && blue>=55 && blue<=255){
@@ -137,7 +141,7 @@ function enableScroll() {
   document.documentElement.style.overflow = "";
 }
 
-function bloquearRedirecionamento(event){
+function bloquearRedirect(event){
   event.preventDefault();
 }
 
@@ -147,12 +151,20 @@ document.addEventListener("DOMContentLoaded", function (){
   var corBotaoD = document.getElementById("botaoDeuteranopia");
   var corBotaoT = document.getElementById("botaoTritanopia");
 
+  function atualizarEstadoBotoes() {
+    localStorage.setItem("ativadoP", ativadoP);
+    localStorage.setItem("ativadoD", ativadoD);
+    localStorage.setItem("ativadoT", ativadoT);
+  }
+
   corBotaoP.addEventListener("click", function (){
     ativadoP = !ativadoP;
     corBotaoD.setAttribute('style', "background-color: #D9D9D9");
     corBotaoP.setAttribute('style', 'background-color: #656565');
     corBotaoT.setAttribute('style', "background-color: #D9D9D9");
     if(ativadoP){
+      ativadoD = false;
+      ativadoT = false; 
       chrome.tabs.query({}, function(tabs){
         tabs.forEach(function(tab){
           chrome.scripting.executeScript({
@@ -173,8 +185,7 @@ document.addEventListener("DOMContentLoaded", function (){
         });
       });
     }
-
-    chrome.runtime.sendMessage({ message: "mudaCorProtanopia", ativadoP: ativadoP });
+    atualizarEstadoBotoes();
   });
   var ativadoD = false;
   corBotaoD.addEventListener("click", function (){
@@ -183,6 +194,8 @@ document.addEventListener("DOMContentLoaded", function (){
     corBotaoD.setAttribute('style', 'background-color: #656565');
     corBotaoT.setAttribute('style', "background-color: #D9D9D9")
     if(ativadoD){
+      ativadoP = false;
+      ativadoT = false;
       chrome.tabs.query({}, function(tabs){
         tabs.forEach(function(tab){
           chrome.scripting.executeScript({
@@ -203,7 +216,7 @@ document.addEventListener("DOMContentLoaded", function (){
         });
       });
     }
-
+    atualizarEstadoBotoes();
   });
   corBotaoT.addEventListener("click", function (){
     ativadoT = !ativadoT;
@@ -211,6 +224,8 @@ document.addEventListener("DOMContentLoaded", function (){
     corBotaoP.setAttribute('style', 'background-color: #D9D9D9');
     corBotaoT.setAttribute('style', 'background-color: #656565');
     if(ativadoT){
+      ativadoD = false;
+      ativadoP = false;
       chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
         tabs.forEach(function(tab){
           chrome.scripting.executeScript({
@@ -231,8 +246,24 @@ document.addEventListener("DOMContentLoaded", function (){
         });
       });
     }
+    atualizarEstadoBotoes();
   });
- 
+  function carregarEstadoBotoes() {
+    ativadoP = localStorage.getItem("ativadoP") === "true";
+    ativadoD = localStorage.getItem("ativadoD") === "true";
+    ativadoT = localStorage.getItem("ativadoT") === "true";
+
+    if(ativadoD){
+      corBotaoD.setAttribute('style', "background-color: #656565");
+    }
+    if(ativadoP){
+      corBotaoP.setAttribute('style', "background-color: #656565");
+    }
+    if(ativadoT){
+      corBotaoT.setAttribute('style', "background-color: #656565");
+    }
+  }
+  carregarEstadoBotoes();
 
   /*function mudaCorTritanopia(){
     var elementos = document.querySelectorAll("*");
@@ -409,9 +440,9 @@ document.addEventListener("DOMContentLoaded", function (){
     console.log("desativada");  
     document.removeEventListener("click", cliqueListener);
     document._clickListenerAdded = false;
-    var links = document.querySelectorAll("a");
-    links.forEach(function (link) {
-      link.removeEventListener("click", bloquearRedirecionamento);
+    var links = document.querySelectorAll("div");
+    links.forEach(function (link){
+      link.removeEventListener("click", bloquearRedirect);
     });
     enableScroll();
   }
