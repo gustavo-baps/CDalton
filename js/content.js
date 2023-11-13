@@ -159,9 +159,9 @@ document.addEventListener("DOMContentLoaded", function (){
 
   corBotaoP.addEventListener("click", function (){
     ativadoP = !ativadoP;
-    corBotaoD.setAttribute('style', "background-color: #D9D9D9");
+    corBotaoD.setAttribute('style', "background-color: #333333");
     corBotaoP.setAttribute('style', 'background-color: #656565');
-    corBotaoT.setAttribute('style', "background-color: #D9D9D9");
+    corBotaoT.setAttribute('style', "background-color: #333333");
     if(ativadoP){
       ativadoD = false;
       ativadoT = false; 
@@ -175,7 +175,7 @@ document.addEventListener("DOMContentLoaded", function (){
       });
     } 
     else{
-      corBotaoP.setAttribute('style', 'background-color: #D9D9D9');
+      corBotaoP.setAttribute('style', 'background-color: #333333');
       chrome.tabs.query({}, function(tabs){
         tabs.forEach(function(tab) {
           chrome.scripting.executeScript({
@@ -190,9 +190,9 @@ document.addEventListener("DOMContentLoaded", function (){
   var ativadoD = false;
   corBotaoD.addEventListener("click", function (){
     ativadoD = !ativadoD;
-    corBotaoP.setAttribute('style', "background-color: #D9D9D9");
+    corBotaoP.setAttribute('style', "background-color: #333333");
     corBotaoD.setAttribute('style', 'background-color: #656565');
-    corBotaoT.setAttribute('style', "background-color: #D9D9D9")
+    corBotaoT.setAttribute('style', "background-color: #333333")
     if(ativadoD){
       ativadoP = false;
       ativadoT = false;
@@ -206,7 +206,7 @@ document.addEventListener("DOMContentLoaded", function (){
       });
     } 
     else{
-      corBotaoD.setAttribute('style', 'background-color: #D9D9D9');
+      corBotaoD.setAttribute('style', 'background-color: #333333');
       chrome.tabs.query({}, function(tabs){
         tabs.forEach(function(tab) {
           chrome.scripting.executeScript({
@@ -220,8 +220,8 @@ document.addEventListener("DOMContentLoaded", function (){
   });
   corBotaoT.addEventListener("click", function (){
     ativadoT = !ativadoT;
-    corBotaoD.setAttribute('style', "background-color: #D9D9D9");
-    corBotaoP.setAttribute('style', 'background-color: #D9D9D9');
+    corBotaoD.setAttribute('style', "background-color: #333333");
+    corBotaoP.setAttribute('style', 'background-color: #333333');
     corBotaoT.setAttribute('style', 'background-color: #656565');
     if(ativadoT){
       ativadoD = false;
@@ -236,7 +236,7 @@ document.addEventListener("DOMContentLoaded", function (){
       });
     } 
     else{
-      corBotaoT.setAttribute('style', 'background-color: #D9D9D9');
+      corBotaoT.setAttribute('style', 'background-color: #333333');
       chrome.tabs.query({}, function(tabs){
         tabs.forEach(function(tab) {
           chrome.scripting.executeScript({
@@ -365,8 +365,8 @@ document.addEventListener("DOMContentLoaded", function (){
           var verde = parseInt(rgb[1]);
           var azul = parseInt(rgb[2]);
 
-          if(vermelho > verde && vermelho > azul){
-            elementos[i].style.filter = "hue-rotate(15deg) saturate(1.2)";
+          if(vermelho > verde && vermelho > azul && verde){
+            elementos[i].style.filter = "hue-rotate(17deg) saturate(1.2)";
           }
         }
         if(corBG.startsWith("rgb")){
@@ -376,7 +376,7 @@ document.addEventListener("DOMContentLoaded", function (){
           var azulBG = parseInt(rgbBG[2]);
 
           if(vermelhoBG > verdeBG && vermelhoBG > azulBG){
-            elementos[i].style.filter = "hue-rotate(15deg) saturate(1.2)";
+            elementos[i].style.filter = "hue-rotate(17deg) saturate(1.2)";
           }
         }
       }
@@ -402,7 +402,7 @@ document.addEventListener("DOMContentLoaded", function (){
           var azul = parseInt(rgb[2]);
 
           if(verde > vermelho && verde > azul){
-            elementos[i].style.filter = "hue-rotate(15deg) saturate(1.2)";
+            elementos[i].style.filter = "hue-rotate(17deg) saturate(1.2)";
           }
         }
         if(corBG.startsWith("rgb")){
@@ -412,7 +412,7 @@ document.addEventListener("DOMContentLoaded", function (){
           var azulBG = parseInt(rgbBG[2]);
 
           if (verdeBG > vermelhoBG && verdeBG > azulBG){
-            elementos[i].style.filter = "hue-rotate(15deg) saturate(1.2)";
+            elementos[i].style.filter = "hue-rotate(17deg) saturate(1.2)";
           }
         }
       }
