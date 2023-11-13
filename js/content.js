@@ -381,7 +381,7 @@ document.addEventListener("DOMContentLoaded", function (){
         }
       }
       else{
-        elementos[i].style.filter = "brightness(1.005) hue-rotate(2deg)";
+        elementos[i].style.filter = "brightness(1.01) hue-rotate(2.5deg)";
       }
     }
   }
@@ -417,7 +417,7 @@ document.addEventListener("DOMContentLoaded", function (){
         }
       }
       else{
-        elementos[i].style.filter = "brightness(1.005) hue-rotate(2deg)";
+        elementos[i].style.filter = "brightness(1.01) hue-rotate(2.5deg)";
       }
     }
   }
