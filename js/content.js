@@ -54,6 +54,7 @@ function capturarCliqueNaPagina(){
             info.style.padding = "10px";
             info.style.fontFamily = 'Verdana';
             info.style.fontSize = '12px';
+            info.style.color = 'black';
             info.style.zIndex = 1000000000000;
 
             document.body.appendChild(info);
